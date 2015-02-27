@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>PDG -- Insert Paper</title>    
+    <link rel="stylesheet" media="screen" href="pdg_insert_paper.css" >
+<!--    <script src="loginMgr.js"></script>
+    <script src="statusMgr.js"></script> -->
+    <script src="pdg_insert_paper.js"></script>
+  </head>
+  <body>
+<!-- <script type="text/javascript" src="input_form_simple.js"></script> -->
+
+<!-- Simple input form -->
+<form class='inputref_form' name='inputref'>
+  <!-- Create input form in a list-->
+  <ul>
+    <li>
+      <h2>PDG Literature Search</h2><br/>
+      <span class="link_results_l"><a href=''>Archive</a></span>
+      <span class="link_results_r"><a href=''>PDG workspace</a></span><br/>
+    </li>
+
+    <li>
+      <label>Journal Code / Number / Page: <br/>
+      <input type='text' id='journal' name='journal' size=4 required /> /
+      <input type='text' id='number' name='number' size=4 required /> /
+      <input type='text' id='page'  name='page' size=6 required />
+      </label>
+    </li>
+    
+    <li>
+      <label for='author'> Author: </label>
+      <input type='text' id='author' name='author' size=10  required/>, 
+      <label for='year'> Year: </label>
+      <input type='text' id='year' name='year' size=4  required/>
+    </li>
+    
+    <li>
+      <label for='particles'> Particles: </label>
+      <input type='text' id='particles' name='particles' size=20  required/>    
+      <br/>
+      <label for='partprop'> Property (optional): </label>
+      <input type='text' id='partprop' name='partprop' size=13 />
+    </li>
+
+    <li>
+      <textarea id='comment' name='comment' cols='20' rows='4'></textarea>
+    </li>
+
+    <li>
+      <button class='submit' type='submit' id='submitref'> Submit </button>
+      <button class='submit submit' type='submit' id='submitToClipboard'> Copy </button>
+      <button class='clear_r' type='submit' id='clearFields'> Clear </button>
+    </li>
+
+  </ul>
+</form>
+<div class=inputref_form>
+  <ul>
+    <li>
+      <div id='login_div'>
+      <label for='loginname'>User: </label>
+      <label id='loginname' name='loginname'>None</label>
+      <button class='login_r' id='login' Login> Sign in</button>
+      <br/>
+      </div>
+    </li>
+  </ul>
+  <label class="status_label" id="status">Ready.</label><br/>      
+</div>
+
+</body>
+</html>

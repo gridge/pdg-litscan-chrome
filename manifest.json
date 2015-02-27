@@ -1,0 +1,36 @@
+{
+  "manifest_version": 2,
+
+  "name": "PDG Literature Scan",
+  "description": "PDG helper for categorizing relevant papers during literature search.",
+  "version": "0.0.1.0",
+  "minimum_chrome_version": "37",
+
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAo3Cxke55lmvbNm7867hDgbKCHL3azYEMZKWF62EzB6tBjKPDl8iVEaO/jf0j9+Lffwtnmino6cuQBOdPE+htd4TGPdd9GrEpKBiXUM/e9Sc3H/BkgUwZZehfWX0J7LGQfGsGe+G1nP1cmnL4OAZNwBW1khT3dn3judWKGcSd1EHkhNA1K4hvab12mguCC8Vtb8Fr7xhatpyLKNI9EJ2iQfOh8IMNZ8pYkg3gFLH79Ssef9UuwHnoXslgYRwsbAKbIrVGL1wxQYE29zCTJVQzPyAOo8RKYf3flS5I5vEJZSE7xsKoNWfXXztb5u/dr4tVrXfV18zZUBGRcnQIeow6TwIDAQAB",
+  "permissions": [ 
+      "identity",
+      "identity.email",
+      "clipboardWrite",
+      "https://ssl.gstatic.com/",
+      "https://accounts.google.com/*",
+      "https://www.googleapis.com/*",
+      "https://spreadsheets.google.com/", 
+      "https://docs.google.com/",
+      "tabs"
+  ],
+  "oauth2": {
+      "client_id": "703387445635-jnme65ucur7i3m2q568visi4qr72c2b5.apps.googleusercontent.com",
+      "scopes": ["https://spreadsheets.google.com/feeds", "https://docs.google.com/feeds", "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/plus.login"]
+  },
+
+  "icons" : {
+      "16" : "images/PDG_icon_16pix.png",
+      "48" : "images/PDG_icon_48pix.png"
+  },
+  "browser_action" : {
+      "default_icon" : "images/PDG_icon_19pix.png",
+      "default_title" : "PDG Lit Scan",
+      "default_popup" : "pdg_insert_paper.html"
+  }
+  
+}

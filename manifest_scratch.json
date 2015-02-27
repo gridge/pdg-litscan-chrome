@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "PDG Literature Scan",
+  "description": "PDG helper for categorizing relevant papers during literature search.",
+  "version": "1.0",
+
+  %%% Run a background script to determine when to display the page action
+  "background": { 
+      "scripts" : [ "journal_supported.js" ]
+  },
+  "permissions": [ "declarativeContent" ],
+  "icons" : {
+      "16" : "images/PDG_icon_16pix.png",
+      "48" : "images/PDG_icon_48pix.png"
+  },
+  "page_action" : {
+      "default_icon" : "images/PDG_icon_19pix.png",
+      "default_title" : "PDG Lit Scan",
+      "default_popup" : "pdg_insert_paper.html"
+  }
+  
+}
