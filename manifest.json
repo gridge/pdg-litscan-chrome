@@ -16,11 +16,17 @@
       "https://www.googleapis.com/*",
       "https://spreadsheets.google.com/", 
       "https://docs.google.com/",
-      "tabs"
+      "tabs",
+      "contextMenus"
   ],
   "oauth2": {
       "client_id": "703387445635-jnme65ucur7i3m2q568visi4qr72c2b5.apps.googleusercontent.com",
       "scopes": ["https://spreadsheets.google.com/feeds", "https://docs.google.com/feeds", "https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/plus.login"]
+  },
+
+  "background" : {
+      "persistent" : false,
+      "scripts" : ["background.js"]
   },
 
   "icons" : {

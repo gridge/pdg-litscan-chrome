@@ -84,6 +84,8 @@ var t_partProp;
 
 var t_comment;
 
+var t_link;
+
 var createInputRecord = function() {
     this.journal = t_journal.value;
     this.number = t_number.value;
@@ -93,6 +95,7 @@ var createInputRecord = function() {
     this.particles = t_particles.value;
     this.partProp = t_partProp.value;
     this.comment = t_comment.value;
+    this.link = t_link.value
 };
 
 /** @} */
@@ -118,6 +121,7 @@ var statusMgr = new function() {
 	t_particles.disabled=lock;
 	t_partProp.disabled=lock;
 	t_comment.disabled=lock;
+	t_link.disabled=lock;
     };
 
     var clearInputFields = function() {
@@ -129,6 +133,7 @@ var statusMgr = new function() {
 	t_particles.value='';
 	t_partProp.value='';
 	t_comment.value='';
+	t_link.value='';
     };
 
     this.setUser = function(user) {
@@ -231,6 +236,8 @@ var statusMgr = new function() {
 	t_partProp = document.getElementById('partprop');
 
 	t_comment = document.getElementById('comment');
+
+	t_link = document.getElementById('link');
 
 	//update status
 	this.changeState(STATE_READY_NOAUTH);
@@ -479,7 +486,9 @@ var loginMgr = new function () {
 // === Submit form results to google spreadsheet
 // =============================================================================
 var gSpreadSheetMgr = new function () {
-    this.constructAtom = function(inputRecord) {
+    //Note, this is asynchronous to allow async operations inside.
+    // callback(outputAtomString) is called with the result
+    this.constructAtom = function(inputRecord, callback) {
 	var atomStr = "<?xml version='1.0' encoding='UTF-8'?>" + "\n";
 	
 	atomStr += '<entry xmlns="http://www.w3.org/2005/Atom" ' + "\n";
@@ -495,38 +504,41 @@ var gSpreadSheetMgr = new function () {
 	atomStr += addCol('particles', inputRecord.particles);
 	atomStr += addCol('property', inputRecord.partProp);
 	atomStr += addCol('note', inputRecord.comment);
-	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-	    atomStr += addCol('link', tabs[0].url);
-	});	
-
+	atomStr += addCol('link', inputRecord.link);
+	//chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+	//    atomStr += addCol('link', tabs[0].url);
+	//    console.log('Retrieved current url link: '+tabs[0].url)
+	//    console.log('XML atom ready: '+atomStr);
+	//    callback(atomStr);
+	//});	
 	atomStr += '</entry>' + "\n";
-
 	console.log('XML atom ready: '+atomStr);
-
-	return atomStr;
+	callback(atomStr);
     }
 
     this.submitRef = function (inputRecord) {
 	var prevState=STATUS;
 	statusMgr.changeState(STATE_SUBMITTING);
-	//@todo: submit to google spreadsheet
-	loginMgr.xhrWithAuth('POST',
-			     'https://spreadsheets.google.com/feeds/list/'+gSpreadsheet_key+'/'+gSpreadsheet_sheet+'/private/full',			     
-			     this.constructAtom(inputRecord),
-			     "application/atom+xml",
-			     false, //needs to be authenticated already
-			     onSubmissionDone);
-	function onSubmissionDone(error, status, response) {
-	    console.log('Submission callback.');
-	    statusMgr.changeState(prevState);
-	    if (!error && status == 201) {
-		statusMgr.log('Input submitted to google spreadsheet.');
-	    } else {
-		statusMgr.log('Possible problem in submission. Status = '+this.status+'; response='+this.response);
-	    }
-	}
-    };
-};
+	this.constructAtom(inputRecord, onAtomCreated);
+	function onAtomCreated(xmlAtomRequest) {
+	    loginMgr.xhrWithAuth('POST',
+				 'https://spreadsheets.google.com/feeds/list/'+gSpreadsheet_key+'/'+gSpreadsheet_sheet+'/private/full',			     
+				 xmlAtomRequest,
+				 "application/atom+xml",
+				 false, //needs to be authenticated already
+				 onSubmissionDone);
+	    function onSubmissionDone(error, status, response) {
+		console.log('Submission callback.');
+		statusMgr.changeState(prevState);
+		if (!error && status == 201) {
+		    statusMgr.log('Input submitted to google spreadsheet.');
+		} else {
+		    statusMgr.log('Possible problem in submission. Status = '+this.status+'; response='+this.response);
+		}
+	    } //onSubmissionDone
+	} //onAtomCreated
+    }; //submitRef
+}; //gSpreadSheetMgr
 
 // =============================================================================
 // === Submit form results to clipboard
@@ -540,6 +552,7 @@ var clipboardMgr = new function () {
 	outputStr += inputRecord.particles + '\t';
 	outputStr += inputRecord.partProp + '\t';
 	outputStr += inputRecord.comment + '\t';
+	outputStr += inputRecord.link + '\t';
 	return outputStr;
     }
 
