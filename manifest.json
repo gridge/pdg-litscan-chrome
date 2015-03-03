@@ -37,7 +37,10 @@
 
   "content_scripts" : [
     {
-      "matches": ["http://journals.aps.org/prl/abstract/*"],
+      "matches": ["http://journals.aps.org/pr*/abstract/*",
+      		  "https://journals.aps.org/pr*/abstract/*",
+		  "http://www.sciencedirect.com/science/article/pii/*",
+		  "http://link.springer.com/article/*"],
       "js": ["inspect_paper.js"]
     }
   ],
