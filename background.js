@@ -2,20 +2,20 @@
 // === Background page controller script
 // =============================================================================
 
-// Setup context menu
+// --- Setup context menu
 chrome.runtime.onInstalled.addListener(function() {
     var context = "page";
     var title = "Add to PDG";
     var id = chrome.contextMenus.create({"title": title, "contexts":[context], "id": "context" + context});
 });
 
-// add click event
-chrome.contextMenus.onClicked.addListener(onClickHandler);
-
-// The onClicked callback function.
+// Add click event
 function onClickHandler(info, tab) {
-    var url = "pdg_insert_paper.html";
-    //window.open(url, '_blank',"menubar=0,location=0,status=0,titlebar=0,toolbar=0");
-    chrome.windows.create({ url: url, type: 'popup', width: 315, height: 500});
+    //Call the popup as new window, passing as argument the id of previous window as reference
+    chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {    
+	var url = "pdg_insert_paper.html#"+tabs[0].id;
+	chrome.windows.create({ url: url, type: 'popup', width: 315, height: 500});
+    });
 };
+chrome.contextMenus.onClicked.addListener(onClickHandler);
 

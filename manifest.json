@@ -29,14 +29,22 @@
       "scripts" : ["background.js"]
   },
 
-  "icons" : {
-      "16" : "images/PDG_icon_16pix.png",
-      "48" : "images/PDG_icon_48pix.png"
-  },
   "browser_action" : {
       "default_icon" : "images/PDG_icon_19pix.png",
       "default_title" : "PDG Lit Scan",
       "default_popup" : "pdg_insert_paper.html"
+  },
+
+  "content_scripts" : [
+    {
+      "matches": ["http://journals.aps.org/prl/abstract/*"],
+      "js": ["inspect_paper.js"]
+    }
+  ],
+
+  "icons" : {
+      "16" : "images/PDG_icon_16pix.png",
+      "48" : "images/PDG_icon_48pix.png"
   }
   
 }

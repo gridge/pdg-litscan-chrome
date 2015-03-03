@@ -98,6 +98,51 @@ var createInputRecord = function() {
     this.link = t_link.value
 };
 
+var fillFields = function(inputRecord) {
+    console.log('auto-fill response received: '+inputRecord);
+    if (inputRecord == undefined) {
+	console.log("ERROR in the auto-fill response. auto-fill aborted.");
+	return;
+    }
+    //fill items only if we have info on them and if the user hasn't put anything in the field yet
+    if (inputRecord.journal && inputRecord.journal != "" && t_journal.value == "") {
+	console.log("auto-fill Journal:"+inputRecord.journal);
+	t_journal.value = inputRecord.journal;
+    }
+    if (inputRecord.number && inputRecord.number != "" && t_number.value == "") {
+	console.log("auto-fill Number:"+inputRecord.number);
+	t_number.value = inputRecord.number;
+    }
+    if (inputRecord.page && inputRecord.page != "" && t_page.value == "") {
+	console.log("auto-fill Page:"+inputRecord.page);
+	t_page.value = inputRecord.page;
+    }
+    if (inputRecord.author && inputRecord.author != "" && t_author.value == "") {
+	console.log("auto-fill Author:"+inputRecord.author);
+	t_author.value = inputRecord.author;
+    }
+    if (inputRecord.year && inputRecord.year != "" && t_year.value == "") {
+	console.log("auto-fill Year:"+inputRecord.year);
+	t_year.value = inputRecord.year;
+    }
+
+    if (inputRecord.link && inputRecord.link != "" && t_link.value == "") {
+	console.log("auto-fill Link:"+inputRecord.link);
+	t_link.value = inputRecord.link;
+    }
+    if (inputRecord.particles && inputRecord.particles != "" && t_particles.value == "") {
+	console.log("auto-fill Particles:"+inputRecord.particles);
+	t_particles.value = inputRecord.particles;
+    }
+    if (inputRecord.partProp && inputRecord.partProp != "" && t_partProp.value == "") {
+	console.log("auto-fill PartProp:"+inputRecord.partProp);
+	t_partProp.value = inputRecord.partProp;
+    }
+    if (inputRecord.comment && inputRecord.comment != "" && t_comment.value == "") {
+	console.log("auto-fill Comment:"+inputRecord.comment);
+	t_comment.value = inputRecord.comment;
+    }
+};
 /** @} */
 
 var statusMgr = new function() {
@@ -505,12 +550,6 @@ var gSpreadSheetMgr = new function () {
 	atomStr += addCol('property', inputRecord.partProp);
 	atomStr += addCol('note', inputRecord.comment);
 	atomStr += addCol('link', inputRecord.link);
-	//chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-	//    atomStr += addCol('link', tabs[0].url);
-	//    console.log('Retrieved current url link: '+tabs[0].url)
-	//    console.log('XML atom ready: '+atomStr);
-	//    callback(atomStr);
-	//});	
 	atomStr += '</entry>' + "\n";
 	console.log('XML atom ready: '+atomStr);
 	callback(atomStr);
@@ -584,6 +623,22 @@ document.addEventListener('DOMContentLoaded', function () {
     STATUS = STATE_START;
     //Connect elements of html
     statusMgr.connectFields();
+    //Ask content script to inspect previous page for automatic filling of fields
+    var messageStr = "PDGLit_Inspect";
+    // first check if the tabId was passed when loading the page.
+    var prevTabId = window.location.hash.substring(1);
+    console.log("Retrieving tab id from URL argument (if any): "+prevTabId);
+    if (prevTabId) {
+	//we've been called with the tabId
+	console.log("Sending message '"+messageStr+"' to content script in tab "+prevTabId+" (passed as argument) for auto-fill.");
+	chrome.tabs.sendMessage(parseInt(prevTabId), messageStr, fillFields);	
+    } else {
+	//we're in popup from the browser_action, retrieve last focused window
+	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+	    console.log("Sending message '"+messageStr+"' to content script in tab "+tabs[0].id+" (last-focused window) for auto-fill.");
+	    chrome.tabs.sendMessage(tabs[0].id, messageStr, fillFields);
+	});
+    }
     //See if a user is already logged in
     loginMgr.login(false);
 });
