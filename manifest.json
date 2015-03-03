@@ -3,7 +3,7 @@
 
   "name": "PDG Literature Scan",
   "description": "PDG helper for categorizing relevant papers during literature search.",
-  "version": "0.0.1.0",
+  "version": "0.1.0.0",
   "minimum_chrome_version": "37",
 
    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAo3Cxke55lmvbNm7867hDgbKCHL3azYEMZKWF62EzB6tBjKPDl8iVEaO/jf0j9+Lffwtnmino6cuQBOdPE+htd4TGPdd9GrEpKBiXUM/e9Sc3H/BkgUwZZehfWX0J7LGQfGsGe+G1nP1cmnL4OAZNwBW1khT3dn3judWKGcSd1EHkhNA1K4hvab12mguCC8Vtb8Fr7xhatpyLKNI9EJ2iQfOh8IMNZ8pYkg3gFLH79Ssef9UuwHnoXslgYRwsbAKbIrVGL1wxQYE29zCTJVQzPyAOo8RKYf3flS5I5vEJZSE7xsKoNWfXXztb5u/dr4tVrXfV18zZUBGRcnQIeow6TwIDAQAB",
