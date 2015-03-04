@@ -13,10 +13,15 @@
  * http://blog.ouseful.info/2011/09/07/google-spreadsheets-api-listing-individual-spreadsheet-sheets-in-r/
  * @{ */
 
-/// Spreadsheet key to append new information
-var gSpreadsheet_key = '1NnneKRwXHpOJn-3Em9c2o0eZBSzfcDm0Jxd7VKiMYq4';
-/// Spreadsheet sheet to use insde gSpreadsheet_key spreadhseet
-var gSpreadsheet_sheet = 'od6';
+/// Spreadsheet key and sheet to append new information
+
+//Test spreadsheet
+//var gSpreadsheet_key = '1NnneKRwXHpOJn-3Em9c2o0eZBSzfcDm0Jxd7VKiMYq4';
+//var gSpreadsheet_sheet = 'od6';
+
+//PDG literatures spreadsheet
+var gSpreadsheet_key = '1rQiUxUlDCGsl7r9HYF3UfkEm_Ebb4S48OkTZN1mE9us';
+var gSpreadsheet_sheet = 'oa4tsgm';
 
 /** @} */
 
