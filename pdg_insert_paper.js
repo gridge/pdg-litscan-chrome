@@ -616,8 +616,18 @@ var clipboardMgr = new function () {
 };
 
 // =============================================================================
-// === Start-up after document is loaded
+// === Start-up and main functions
 // =============================================================================
+
+//Listener for delayed information
+var onDetailedInfoReceived = function (message, sender, sendResponse) {
+    console.log("Received message from: "+sender+": "+message);
+    if (message.message && message.message != "PDGLit_DetailedInfo") return; //only listen to this message
+    
+    if (message.paperInfo) fillFields(message.paperInfo);
+
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     if (STATUS != STATE_PREINIT) return;
     STATUS = STATE_START;
@@ -639,6 +649,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	    chrome.tabs.sendMessage(tabs[0].id, messageStr, fillFields);
 	});
     }
+    //Add a listener for delayed information from the content script
+    // (dynamic pages or info that takes time to compute)
+    chrome.runtime.onMessage.addListener( onDetailedInfoReceived );
     //See if a user is already logged in
     loginMgr.login(false);
 });

@@ -56,13 +56,7 @@ Year:
 Link: 
  Use DOI
 
-*** Physics Letters B, Nuclear Physics A, Nuclear Physics B, Physics Reports
-Note: 
- Content is loaded dynamically via AJAX call. Info buried into <script> tag
-URL: 
- www.sciencedirect.com/science/article/pii/*
-
-*** JHEP
+*** JHEP, EPJ A, EPJ C
 Note: 
  All info into <meta> field. Thanks Springer!
  We can get DOI from:
@@ -75,6 +69,8 @@ Journal, Number, Page:
  <meta name="citation_volume" content="2014"/>
  <meta name="citation_issue" content="3"/>
  [but number of paper from DOI]
+ For EPJ different treatment and have to query element with id="volume-range",
+ the year from metadata
 Author:
  <meta name="citation_author" content="Thomas W. Grimm"/>
  [Use first one, OK for collaborations]
@@ -83,4 +79,26 @@ Year:
 Link:
  Create from DOI appending prefix:
  http://dx.doi.org/
+
+*** Physics Letters B
+Note: 
+ Content is loaded dynamically via AJAX call. Need to wait for it to be loaded.
+ Can see what will look like accessing the link and appending '?np=y' to the URL
+URL: 
+ www.sciencedirect.com/science/article/pii/*
+Journal: 
+  <div class="title"><a title="..." queryStr="..." class="cLink"><span>Physics Letters B</span></a></div> 
+Number, Page, Year: 
+  <p class="volIssue"><a class="S_C_volIss" title="...">Volume 743</a>, 9 April 2015, Pages 79–81</p>
+  get as class element. and retrieve innerText:
+  Volume 743, 9 April 2015, Pages 79–81
+  Then parse to get Number, Page, Year
+Page: 
+ 
+Author: 
+ <a href="#" class="authorName S_C_authorName svAuthor" id="..." data-t="a" data-fn="G." data-ln="Aad" data-pos="1" data-tb="">G. Aad</a>
+ and get InnerText of the first element of this class.
+ 
+Link: 
+ 
 
