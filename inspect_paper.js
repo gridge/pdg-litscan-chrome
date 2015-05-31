@@ -38,15 +38,15 @@ var getFirstAuthor = function(rawText) {
 // =============================================================================
 var getAPSInfo = function() {    
     var paperInfo = {};
-  
+
     //get DOI (useful for many things below)
-    var t_doi = document.getElementsByClassName('doi');
+    var t_doi = document.getElementsByClassName('doi-field');
     var journal_doi = "";
     var journal_doi_array = [];
     if (t_doi.length == 0) {
 	console.log("Invalid DOI found: t_doi");
     } else {
-	journal_doi = t_doi[0].innerText.substr(t_doi[0].innerText.lastIndexOf('/') + 1);
+	journal_doi = t_doi[0].value.substr(t_doi[0].value.lastIndexOf('/') + 1);
 	journal_doi_array = journal_doi.split('.');
     }
 
@@ -85,7 +85,7 @@ var getAPSInfo = function() {
     }
 
     //--- Journal link (removing 'DOI:')
-    paperInfo.link = t_doi[0].innerText.substr(t_doi[0].innerText.indexOf(':')+1).trim();
+    paperInfo.link = t_doi[0].value.trim();
 
    
     return paperInfo;
