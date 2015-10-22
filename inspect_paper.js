@@ -151,9 +151,9 @@ var getSpringerInfo = function() {
     } else if ( (paperInfo.journal == "EPJ") && journalSuffix == "C") {
 	paperInfo.number = journalSuffix+journal_volume;
 	//for the page we need to query another element, unfortunately
-	var t_VolPage = document.getElementById("volume-range");
-	if (t_VolPage) {
-	    paperInfo.page = t_VolPage.innerText.substr(t_VolPage.innerText.indexOf(':')+1);
+	var t_VolPage = document.getElementsByClassName("ArticleCitation_Volume");
+	if (t_VolPage && t_VolPage.length > 0) {
+	    paperInfo.page = t_VolPage[0].innerText.substr(t_VolPage[0].innerText.indexOf(':')+1);
 	}	
 	paperInfo.year = journalDate.substr(0, journalDate.indexOf('/'));
     }
