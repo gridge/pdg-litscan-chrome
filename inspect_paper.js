@@ -46,7 +46,8 @@ var getAPSInfo = function() {
     if (t_doi.length == 0) {
 	console.log("Invalid DOI found: t_doi");
     } else {
-	journal_doi = t_doi[0].value.substr(t_doi[0].value.lastIndexOf('/') + 1);
+	console.log("DOI:"+t_doi.innerText)
+	journal_doi = t_doi[0].innerText.substr(t_doi[0].innerText.lastIndexOf('/') + 1);
 	journal_doi_array = journal_doi.split('.');
     }
 
@@ -75,17 +76,53 @@ var getAPSInfo = function() {
 	paperInfo.author = getFirstAuthor(journal_author[0].innerText);
     }
 
-    //--- Journal year
+    //--- others from meta-data
     paperInfo.year = "";
     var allMetaFields = document.getElementsByTagName("META");
     for (var i=0; i < allMetaFields.length; i++) {
 	if (allMetaFields[i].getAttribute("property")=="article:published_time") {
 	    paperInfo.year = allMetaFields[i].getAttribute("content").substr(0,allMetaFields[i].getAttribute("content").indexOf('-'));
+	} /*else if (allMetaFields[i].getAttribute("name")=="citation_author") {
+	    if (paperInfo.author == '') { //first author only
+		var fullAuthorName = allMetaFields[i].getAttribute("content");		
+		var LastNameIndex = fullAuthorName.lastIndexOf(' ')
+		paperInfo.author = fullAuthor.substr(LastNameIndex+1)
+	    }
+	} else if (allMetaFields[i].getAttribute("name")=="citation_doi") {
+	    //--- DOI
+	    var t_doi = allMetaFields[i].getAttribute("content");
+	    var journal_doi = "";
+	    var journal_doi_array = [];	    
+	    if (t_doi.length == 0) {
+		console.log("Invalid DOI found: t_doi");
+	    } else {
+		journal_doi = t_doi[0].value.substr(t_doi[0].value.lastIndexOf('/') + 1);
+		journal_doi_array = journal_doi.split('.');
+	    }
+	    //--- Journal name
+	    var journal_suffix = "";
+	    if (journal_doi_array) {
+		if (journal_doi_array[0] == "PhysRevLett")   {paperInfo.journal = "PRL";}
+		else if (journal_doi_array[0] == "PhysRevD") {paperInfo.journal = "PR"; journal_suffix = "D";}
+		else if (journal_doi_array[0] == "PhysRevC") {paperInfo.journal = "PR"; journal_suffix = "C";}
+		else if (journal_doi_array[0] == "PhysRevX") {paperInfo.journal = "PR"; journal_suffix = "X";};
+	    } else {
+		console.log("Potential problem with journal metadata. Journal not found in DOI. Aborting");
+		return {};
+	    }
+
+	    //--- Journal issue/page
+	    if (journal_doi_array.length >= 2) {
+		paperInfo.number = journal_suffix+journal_doi_array[1];
+	    }
+	    if (journal_doi_array.length >= 3)
+		paperInfo.page = journal_doi_array[2];	    
 	}
+	*/	
     }
 
     //--- Journal link (removing 'DOI:')
-    paperInfo.link = t_doi[0].value.trim();
+    paperInfo.link = t_doi[0].innerText.trim();
 
    
     return paperInfo;
