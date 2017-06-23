@@ -164,8 +164,11 @@ var getSpringerInfo = function() {
 	} else if (journal_issue == "" && allMetaFields[i].getAttribute("name")=="citation_issue") {
 	    journal_issue = allMetaFields[i].getAttribute("content");
 	} else if (paperInfo.author == "" && allMetaFields[i].getAttribute("name")=="citation_author") {
-	    //important: only keep firs author! One meta tag per author is present.
-	    paperInfo.author = getFirstAuthor(allMetaFields[i].getAttribute("content"));
+	    //important: only keep first author! One meta tag per author is present.
+	    //Note: for some journal first author in meta-data is collaboration, if so skip it!
+	    if (allMetaFields[i].getAttribute("content").indexOf("collaboration") == -1) {
+		paperInfo.author = getFirstAuthor(allMetaFields[i].getAttribute("content"));
+	    }
 	} else if (journalDate == "" && allMetaFields[i].getAttribute("name")=="citation_online_date") {
 	    journalDate = allMetaFields[i].getAttribute("content");
 	}
@@ -178,7 +181,8 @@ var getSpringerInfo = function() {
 	if (journal_issue.length == 1) journal_issue = "0"+journal_issue;
 	paperInfo.number = journalSuffix+journalNumber + journal_issue;
 	paperInfo.page = journal_doi.substr(journal_doi.indexOf(')')+1);
-	while (paperInfo.page.length < 3) paperInfo.page = "0" + paperInfo.page;
+	while (paperInfo.page.length < 3) paperInfo.page = "0" + paperInfo.page;	
+	paperInfo.year = journalDate.substr(0, journalDate.indexOf('/'));
     } else if ( (paperInfo.journal == "EPJ") && journalSuffix == "A") {
 	paperInfo.number = journalSuffix+journal_volume;
 	var tmpPage = journal_doi.substr(journal_doi.lastIndexOf('/')+1);

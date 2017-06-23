@@ -576,6 +576,8 @@ var gSpreadSheetMgr = new function () {
 		statusMgr.changeState(prevState);
 		if (!error && status == 201) {
 		    statusMgr.log('Input submitted to google spreadsheet.');
+		    //close window
+		    self.close();
 		} else {
 		    statusMgr.log('Possible problem in submission. Status = '+this.status+'; response='+this.response);
 		}

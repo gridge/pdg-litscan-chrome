@@ -14,7 +14,7 @@ function onClickHandler(info, tab) {
     //Call the popup as new window, passing as argument the id of previous window as reference
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {    
 	var url = "pdg_insert_paper.html#"+tabs[0].id;
-	chrome.windows.create({ url: url, type: 'popup', width: 315, height: 500});
+	chrome.windows.create({ url: url, type: 'popup', width: 400, height: 610});
     });
 };
 chrome.contextMenus.onClicked.addListener(onClickHandler);
