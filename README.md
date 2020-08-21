@@ -2,6 +2,9 @@ INTRO
 ---------
 This is a simpel chrome extension allowing to make the job of literature search a little more quick.
 
+IMPORTANT: Need to make sure that chrome synch is enabled to be able to authenticate
+https://stackoverflow.com/questions/33158084/chrome-extension-identity-email-empty
+
 
 RANDOM NOTES
 ---------

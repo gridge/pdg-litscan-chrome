@@ -203,6 +203,15 @@ var getSpringerInfo = function() {
     //Link
     paperInfo.link = "http://dx.doi.org/"+journal_doi;
 
+    //debug:
+    console.log("Summary of dynamic info collected:");
+    console.log("Journal: "+paperInfo.journal);
+    console.log("Number: "+paperInfo.number);
+    console.log("Page: "+paperInfo.page);
+    console.log("Author: "+paperInfo.author);
+    console.log("Year: "+paperInfo.year);
+    console.log("Link: "+paperInfo.link);	
+
 
     return paperInfo;
 };
@@ -317,15 +326,16 @@ chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
 
     //now check what URL pattern we're scanning and call appropriate function
     if (document.URL.match(/journals.aps.org\/pr.+\/abstract\//)) {
-	paperInfo = getAPSInfo();
+		paperInfo = getAPSInfo();
     } else if (document.URL.match(/link.springer.com\/article\//)) {
-	paperInfo = getSpringerInfo();
+		console.log("Detected springer journal, retrieving data.")
+		paperInfo = getSpringerInfo();
     } else if (document.URL.match(/www.sciencedirect.com\/science\/article\/pii\//)) {
-	//ScienceDirect loads all the info dynamically. Need to wait for them to appear.
-	console.log("All dynamic content. Setting a delayed response.");
-	timerForDelayedLoad = setInterval ( checkDynamicContentScienceDirect, 500);
+		//ScienceDirect loads all the info dynamically. Need to wait for them to appear.
+		console.log("All dynamic content. Setting a delayed response.");
+		timerForDelayedLoad = setInterval ( checkDynamicContentScienceDirect, 500);
     } else {
-	console.log("No matching journal found for URL: "+document.URL);
+		console.log("No matching journal found for URL: "+document.URL);
     }
     console.log("Sending response:\n"+paperInfo);
 
