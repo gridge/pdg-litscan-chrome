@@ -315,6 +315,7 @@ chrome.runtime.onMessage.addListener( function (message, sender, sendResponse) {
     paperInfo.comment = "";
     paperInfo.link = "";
 
+    console.log("URL: "+document.URL);
     //now check what URL pattern we're scanning and call appropriate function
     if (document.URL.match(/journals.aps.org\/pr.+\/abstract\//)) {
 	paperInfo = getAPSInfo();
